@@ -14,11 +14,19 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
   config.vm.network "private_network", ip: "192.168.56.4" 
-  #for nfs :
-  #windows :  vagrant plugin install vagrant-winnfsd
-  #ubuntu  : sudo apt-get install nfs-kernel-server
+  
+  # nfs :
+  #
+  # windows :  vagrant plugin install vagrant-winnfsd
+  # ubuntu  : sudo apt-get install nfs-kernel-server
   config.vm.synced_folder ".", "/home/vagrant/project", type: "nfs"
-
+  
+  # SSH Agent Forwarding
+  #
+  # Enable agent forwarding on vagrant ssh commands. This allows you to use ssh keys
+  # on your host machine inside the guest. See the manual for `ssh-add`.
+#  config.ssh.private_key_path = '~/.ssh/id_rsa'
+#  config.ssh.forward_agent = true
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -72,12 +80,14 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
 
     sudo apt-get update
+    
+    apt-get install -y apache2
 
-    sudo apt-get install build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
+    apt-get install -y libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
 
-    sudo apt-get install git
+    sudo apt-get install -y git
 
-    sudo apt-get install curl libcurl3 libcurl3-dev php5-curl - See more at: http://devendraverma.com/install-curl-on-ubuntu-14-04/#sthash.gv3U8cob.dpuf
+    sudo apt-get install -y curl libcurl3 libcurl3-dev php5-curl
 
     sudo service apache2 restart
 
@@ -88,9 +98,9 @@ sudo apt-get install -y nodejs
 
     apt-get install nodejs-legacy
 
-    sudo apt-get install npm
+    sudo apt-get install -y npm
 
-    sudo npm install bower -g
+    sudo npm install -y bower -g
     
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 
