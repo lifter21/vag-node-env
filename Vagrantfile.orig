@@ -13,8 +13,8 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu12_04"
-  config.vm.network "private_network", ip: "192.168.110.100" #私有网络配置
-  config.vm.synced_folder ".", "/vagrant"  # 将当前目录映射到虚拟机上的/vagrant 目录
+  config.vm.network "private_network", ip: "192.168.110.100" #
+  config.vm.synced_folder ".", "/vagrant"  # /vagrant
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

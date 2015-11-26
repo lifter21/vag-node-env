@@ -1,11 +1,19 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = 2
+
+name = "NodeJS dev"
+memory = "512"
+cpu="2"
+type="nfs" # "", "nfs"
+ip = "192.168.56.4"
+home = "/home/vagrant/project"
+sync= "."
 
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-Vagrant.configure(2) do |config|
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -13,20 +21,28 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
-  config.vm.network "private_network", ip: "192.168.56.4" 
-  
+  config.vm.network "private_network", ip: ip
+
   # nfs :
   #
   # windows :  vagrant plugin install vagrant-winnfsd
   # ubuntu  : sudo apt-get install nfs-kernel-server
-  config.vm.synced_folder ".", "/home/vagrant/project", type: "nfs"
-  
+
+  if type
+    config.vm.synced_folder sync, home, type: type
+  else
+    config.vm.synced_folder sync, home
+  end
+  # config.vm.synced_folder ".", "/home/vagrant/project", type: "nfs"
+
   # SSH Agent Forwarding
   #
   # Enable agent forwarding on vagrant ssh commands. This allows you to use ssh keys
   # on your host machine inside the guest. See the manual for `ssh-add`.
-#  config.ssh.private_key_path = '~/.ssh/id_rsa'
-#  config.ssh.forward_agent = true
+
+  #  config.ssh.private_key_path = '~/.ssh/id_rsa'
+  #  config.ssh.forward_agent = true
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -56,13 +72,24 @@ Vagrant.configure(2) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
+  # config.vm.provider "virtualbox" do |v|
+  #   v.name = name
+  #   v.customize ["modifyvm", :id, "--memory", memory]
+  #   v.customize ["modifyvm", :id, "--cpus", cpu]
+  #   v.customize ["modifyvm", :id, "--vram", "8"]
+  #   v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+  # end
    config.vm.provider "virtualbox" do |vb|
      # Display the VirtualBox GUI when booting the machine
-#     vb.gui = true
-  
+     # vb.gui = true
+     vb.name = name
      # Customize the amount of memory on the VM:
-     vb.memory = "512"
+     vb.memory = memory
+     vb.customize ["modifyvm", :id, "--cpus", cpu]
+     vb.customize ["modifyvm", :id, "--vram", "8"]
+     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
    end
+
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -79,36 +106,38 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
 
-    sudo apt-get update
-    
-    apt-get install -y apache2
+    ##update
+    sudo apt-get -y update
 
-    apt-get install -y libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
+    ##
+    apt-get install -y apache2 libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
 
-    sudo apt-get install -y git
+    ##bash-completion
+    sudo dpkg -l | grep bash-completion || ( sudo apt-get install -y bash-completion )
 
-    sudo apt-get install -y curl libcurl3 libcurl3-dev php5-curl
+    ##git
+    which git || sudo apt-get install -y git
 
-    sudo service apache2 restart
+    ##curl
+    which curl || (sudo apt-get install -y curl libcurl3 libcurl3-dev php5-curl && sudo service apache2 restart)
 
-    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-sudo apt-get install -y nodejs
+    ##nodejs
+    which nodejs ||
+    (sudo apt-get -y install python-software-properties python && curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs && sudo apt-get install -y build-essential &&  apt-get install -y nodejs-legacy)
 
-    sudo apt-get install -y build-essential
+    ##npm
+    which npm ||sudo apt-get install -y npm
 
-    apt-get install nodejs-legacy
+    ##nodemon
+    which nodemon || sudo npm install -g nodemon
 
-    sudo apt-get install -y npm
+    ##bower
+    which bower || sudo npm install -y bower -g
 
-    sudo npm install -y bower -g
-    
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-
-    echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-    
-    sudo apt-get update
-    
-    sudo apt-get install -y mongodb-org
+    ##mongo
+    which mongo ||
+    (sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && sudo apt-get update -y && sudo apt-get install -y mongodb-org)
 
   SHELL
 
