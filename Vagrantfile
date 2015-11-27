@@ -106,32 +106,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ##update
     sudo apt-get -y update
 
-      ##
-      apt-get install -y apache2 libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
+    ##
+    apt-get install -y apache2 libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev
 
-      ##bash-completion
-      sudo dpkg -l | grep bash-completion || ( sudo apt-get install -y bash-completion )
+    ##bash-completion
+    sudo dpkg -l | grep bash-completion || ( sudo apt-get install -y bash-completion )
 
-      ##git
-      which git || sudo apt-get install -y git
+    ##git
+    which git || sudo apt-get install -y git
 
-      ##curl
-      which curl || (sudo apt-get install -y curl libcurl3 libcurl3-dev php5-curl && sudo service apache2 restart)
+    ##curl
+    which curl || (sudo apt-get install -y curl libcurl3 libcurl3-dev php5-curl && sudo service apache2 restart)
 
-      ##nodejs
-      which npm ||
-      (sudo apt-get -y install python-software-properties python && curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+    ##nodejs
+    which npm ||
+    (sudo apt-get -y install python-software-properties python && curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
   sudo apt-get install -y nodejs && sudo apt-get install -y build-essential &&  apt-get install -y nodejs-legacy)
 
-      ##nodemon
-      which nodemon || sudo npm install -g nodemon
+    ##nodemon
+    which nodemon || sudo npm install -g nodemon
 
-      ##bower
-      which bower || sudo npm install -y bower -g
+    ##bower
+    which bower || sudo npm install -y bower -g
 
-      ##mongo
-      which mongo ||
-      (sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && sudo apt-get update -y && sudo apt-get install -y mongodb-org) && sudo locale-gen en_US.UTF-8 && sudo dpkg-reconfigure locales)
+    ##mongo
+    which mongo ||
+    (sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && sudo apt-get update -y && sudo apt-get install -y mongodb-org) && sudo locale-gen en_US.UTF-8 && sudo dpkg-reconfigure locales)
 
   SHELL
 
