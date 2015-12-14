@@ -1,6 +1,6 @@
 VAGRANTFILE_API_VERSION = 2
 
-name = "NodeJS dev"
+name = "MEAN-dev"
 memory = "512"
 cpu="2"
 type="nfs" # "", "nfs"
@@ -131,7 +131,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     ##mongo
     which mongo ||
-    (sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && sudo apt-get update -y && sudo apt-get install -y mongodb-org) && sudo locale-gen en_US.UTF-8 && sudo dpkg-reconfigure locales)
+    (sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list && sudo apt-get update -y && sudo apt-get install -y mongodb-org && sudo locale-gen en_US.UTF-8 && sudo dpkg-reconfigure locales)
 
   SHELL
 
