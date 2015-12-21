@@ -1,31 +1,38 @@
-alias ns='npm start '
+"alias ns='npm start '"
 
-alias gs='git status '
+"alias gs='git status '"
 
-alias ga='git add '
+"alias ga='git add '"
 
-alias gA='git add -A'
+"alias gA='git add -A'"
 
-alias gb='git branch '
+"alias gb='git branch '"
 
-alias gc='git commit'
+"alias gc='git commit'"
 
-alias gd='git diff'
+"alias gd='git diff'"
 
-alias go='git checkout '
+"alias go='git checkout '"
 
-alias gk='gitk --all&'
+"alias gk='gitk --all&'"
 
-alias gx='gitx --all'
+"alias gx='gitx --all'"
 
-alias got='git '
+"alias got='git '"
 
-alias get='git '
+"alias get='git '"
 
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.st status
-git config --global alias.br branch
-git config --global alias.hist 'log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
-git config --global alias.type 'cat-file -t'
-git config --global alias.dump 'cat-file -p'
+# touch ~/.bash_aliases
+# DEST=~/.profile
+for A in "alias ns='npm start '" "alias gs='git status '" "alias ga='git add '" "alias gA='git add -A'" "alias gb='git branch '" "alias gc='git commit'" "alias gd='git diff'" "alias go='git checkout '" "alias gk='gitk --all&'" "alias gx='gitx --all'" "alias got='git '" "alias get='git '"; do
+  echo ${A} >> ~/.profile; # or ~/.bash_aliases
+  echo >> ~/.profile; # ~/.bash_aliases
+done
+
+git config --global "alias.co checkout
+git config --global "alias.ci commit
+git config --global "alias.st status
+git config --global "alias.br branch
+git config --global "alias.hist 'log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'
+git config --global "alias.type 'cat-file -t'
+git config --global "alias.dump 'cat-file -p'
